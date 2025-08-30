@@ -28,15 +28,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source="user.id")
+    owner = serializers.ReadOnlyField(source="owner.username")
 
     class Meta:
         model = Task
         fields = [
-            "id", "user", "title", "description", "due_date",
-            "priority", "status", "created_at", "completed_at"
+            "id",
+            "title",
+            "description",
+            "due_date",
+            "priority",
+            "status",
+            "completed_at",
+            "created_at",
+            "updated_at",
+            "owner",
         ]
-        read_only_fields = ["id", "user", "created_at", "completed_at"]
+        read_only_fields = ["id", "status", "completed_at", "created_at", "updated_at"]
 
     def validate_due_date(self, value):
         # due_date is a date field; ensure it's in the future (not today or past)
@@ -58,7 +66,7 @@ class TaskSerializer(serializers.ModelSerializer):
             non_status_changes = {k: v for k, v in attrs.items() if k != "status"}
             if non_status_changes:
                 raise serializers.ValidationError(
-                    "Completed tasks cannot be edited. Revert status to 'Pending' first."
+                    "Completed tasks cannot be edited. To make changes, first mark the task as Pending."
                 )
         return attrs
 
