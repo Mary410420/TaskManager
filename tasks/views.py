@@ -1,4 +1,3 @@
-# tasks/views.py
 from rest_framework import viewsets, filters, status, generics, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -47,6 +46,10 @@ class TaskFilter(django_filters.FilterSet):
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [django_filters.DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = TaskFilter
+    ordering_fields = ["due_date", "priority"]
+    ordering = ["due_date"]
 
     def get_queryset(self):
         return Task.objects.filter(owner=self.request.user)
