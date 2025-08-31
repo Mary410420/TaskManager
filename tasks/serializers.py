@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import Task
+from django.utils.timezone import is_aware, make_aware
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8, required=True)
@@ -47,9 +48,13 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "status", "completed_at", "created_at", "updated_at"]
 
     def validate_due_date(self, value):
-        # due_date is a date field; ensure it's in the future (not today or past)
-        if value and value <= timezone.localdate():
-            raise serializers.ValidationError("Due date must be a future date.")
+        now = timezone.now()
+        if value:
+            # Ensure both are aware
+            if not is_aware(value):
+                value = make_aware(value)
+            if value <= now:
+                raise serializers.ValidationError("Due date must be in the future.")
         return value
 
     def validate(self, attrs):
