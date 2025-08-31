@@ -64,10 +64,9 @@ class TaskSerializer(serializers.ModelSerializer):
         """
         instance = getattr(self, "instance", None)
         if instance and instance.status == "Completed":
-            # If trying to revert to Pending, allow that
             if attrs.get("status") == "Pending":
                 return attrs
-            # If any other changes beyond status, block
+           
             non_status_changes = {k: v for k, v in attrs.items() if k != "status"}
             if non_status_changes:
                 raise serializers.ValidationError(
@@ -78,7 +77,6 @@ class TaskSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         old_status = instance.status
         instance = super().update(instance, validated_data)
-        # manage completed_at timestamp
         if old_status != instance.status:
             if instance.status == "Completed":
                 instance.completed_at = timezone.now()
