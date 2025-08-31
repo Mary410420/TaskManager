@@ -32,7 +32,7 @@ A Django REST Framework-based Task Management API that allows users to manage ta
 
 1. **Clone the repository:**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/Mary410420/TaskManager
    cd TaskManager
 
 2. **Create a virtual environment:**
