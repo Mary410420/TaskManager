@@ -119,20 +119,21 @@ A Django REST Framework-based Task Management API that allows users to manage ta
 
 ---
 
-## Project Structure
+## Major Project Structure
 
-TaskManager/
-├── core/
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── tasks/
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── permissions.py
-├── manage.py
-└── requirements.txt
+    ```bash
+    TaskManager/
+    ├── core/
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    ├── tasks/
+    │   ├── models.py
+    │   ├── views.py
+    │   ├── serializers.py
+    │   └── permissions.py
+    ├── manage.py
+    └── requirements.txt
 
 ---
 
